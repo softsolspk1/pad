@@ -1,17 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff, ArrowLeft, ShieldCheck, Activity, Sparkles, Users } from "lucide-react";
 
 export default function Login() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setError(null);
     setLoading(true);
-    setTimeout(() => setLoading(false), 900);
+
+    const formData = new FormData(e.currentTarget);
+    const identifier = formData.get("identifier");
+    const password = formData.get("password");
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier, password }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Login failed");
+        setLoading(false);
+        return;
+      }
+
+      router.push(searchParams.get("next") || "/dashboard");
+    } catch {
+      setError("Could not reach the server. Please try again.");
+      setLoading(false);
+    }
   }
 
   return (
@@ -73,7 +109,7 @@ export default function Login() {
           <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
               <label className="label">PMDC Number or Email</label>
-              <input type="text" className="input-field" placeholder="Enter PMDC Number or Email" required />
+              <input type="text" name="identifier" className="input-field" placeholder="Enter PMDC Number or Email" required />
             </div>
             <div>
               <div className="flex justify-between items-center mb-2">
@@ -85,6 +121,7 @@ export default function Login() {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
+                  name="password"
                   className="input-field pr-11"
                   placeholder="Enter Password"
                   required
@@ -99,6 +136,10 @@ export default function Login() {
                 </button>
               </div>
             </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 text-sm p-3 rounded-lg">{error}</div>
+            )}
 
             <button type="submit" disabled={loading} className="btn-primary w-full mt-2 disabled:opacity-70">
               {loading ? "Logging in..." : "Log In"}

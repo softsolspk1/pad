@@ -1,15 +1,33 @@
 import Link from "next/link";
-import { 
-  Home, Users, Calendar, BookOpen, MessageCircle, 
-  HelpCircle, Activity, ClipboardList, Info, User, 
-  LogOut, Bell, MessageSquare 
+import { cookies } from "next/headers";
+import {
+  Home, Users, Calendar, BookOpen, MessageCircle,
+  HelpCircle, Activity, ClipboardList, Info, User,
+  Bell, MessageSquare
 } from "lucide-react";
+import { verifySession, SESSION_COOKIE } from "@/lib/auth";
+import { pool } from "@/lib/db";
+import SignOutButton from "@/components/SignOutButton";
 
-export default function DashboardLayout({
+async function getCurrentMember() {
+  const token = cookies().get(SESSION_COOKIE)?.value;
+  const session = token ? await verifySession(token) : null;
+  if (!session) return null;
+
+  const result = await pool.query(
+    `SELECT id, full_name, designation, photo_url, membership_number FROM registrations WHERE id = $1`,
+    [session.id]
+  );
+  return result.rows[0] ?? null;
+}
+
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const member = await getCurrentMember();
+
   return (
     <div className="app-container">
       {/* Sidebar for Desktop */}
@@ -58,9 +76,7 @@ export default function DashboardLayout({
         </nav>
         
         <div className="mt-auto mb-4">
-          <Link href="/" className="sidebar-item text-red-500 hover:bg-red-50">
-            <LogOut size={20} /> Sign Out
-          </Link>
+          <SignOutButton className="sidebar-item text-red-500 hover:bg-red-50 w-full text-left" />
         </div>
       </aside>
 
@@ -73,19 +89,18 @@ export default function DashboardLayout({
               </div>
            </div>
            <div className="hidden md:flex flex-1">
-             <h2 className="font-semibold">Welcome back, Dr. Ayesha Khan</h2>
+             <h2 className="font-semibold">Welcome back, {member?.full_name ?? "Doctor"}</h2>
            </div>
-           
+
            <div className="flex items-center gap-4 text-[var(--primary-color)]">
-              <button className="relative p-2">
+              <Link href="/dashboard/notifications" className="relative p-2">
                 <Bell size={24} />
-                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
-              </button>
-              <button className="relative p-2">
+              </Link>
+              <Link href="/dashboard/chat" className="relative p-2">
                 <MessageSquare size={24} />
-              </button>
+              </Link>
               <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden border-2 border-white shadow-sm ml-2">
-                <img src="https://i.pravatar.cc/150?u=dr_ayesha" alt="Profile" className="w-full h-full object-cover" />
+                <img src={member?.photo_url || "https://i.pravatar.cc/150?u=default"} alt="Profile" className="w-full h-full object-cover" />
               </div>
            </div>
         </header>

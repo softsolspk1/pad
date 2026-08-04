@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 import { pool } from "@/lib/db";
 
 const REQUIRED_FIELDS = [
@@ -32,16 +33,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: `Missing required fields: ${missing.join(", ")}` }, { status: 400 });
   }
 
+  if (!body.password || String(body.password).length < 8) {
+    return NextResponse.json({ error: "Password must be at least 8 characters" }, { status: 400 });
+  }
+
   try {
+    const passwordHash = await bcrypt.hash(body.password, 10);
+
     const result = await pool.query(
       `INSERT INTO registrations (
         full_name, father_husband_name, designation, gender, date_of_birth, cnic_number,
         member_residence, country, province, city, home_address,
         institute_name, pmdc_number, phone, email, institute_address,
-        photo_url, mbbs_certificate_url, cnic_copy_url, degree_url
-      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)
+        photo_url, mbbs_certificate_url, cnic_copy_url, degree_url, password_hash
+      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)
       RETURNING id, created_at`,
-      REQUIRED_FIELDS.map((field) => body[field])
+      [...REQUIRED_FIELDS.map((field) => body[field]), passwordHash]
     );
 
     return NextResponse.json({ id: result.rows[0].id, createdAt: result.rows[0].created_at }, { status: 201 });

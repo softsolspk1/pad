@@ -42,6 +42,13 @@ export default function Register() {
     const formData = new FormData(e.currentTarget);
     const payload: Record<string, string> = Object.fromEntries(formData.entries()) as Record<string, string>;
 
+    if (payload.password !== payload.confirm_password) {
+      setError("Passwords do not match");
+      setSubmitting(false);
+      return;
+    }
+    delete payload.confirm_password;
+
     for (const key of REQUIRED_DOCS) {
       payload[DOC_FIELD_MAP[key]] = docs[key] ?? "";
     }
@@ -219,6 +226,21 @@ export default function Register() {
             <div className="mt-4">
               <label className="label">Institute / Clinic Address *</label>
               <textarea name="institute_address" className="input-field" rows={2} required></textarea>
+            </div>
+          </section>
+
+          {/* Account */}
+          <section>
+            <h3 className="text-base font-bold text-gray-900 mb-4 border-t pt-6">Account Password</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="label">Set Password *</label>
+                <input type="password" name="password" className="input-field" placeholder="At least 8 characters" minLength={8} required />
+              </div>
+              <div>
+                <label className="label">Confirm Password *</label>
+                <input type="password" name="confirm_password" className="input-field" placeholder="Re-enter password" minLength={8} required />
+              </div>
             </div>
           </section>
 
