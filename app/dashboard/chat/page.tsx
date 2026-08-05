@@ -44,10 +44,15 @@ export default function ChatPage() {
   const [directory, setDirectory] = useState<DirectoryMember[]>([]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [groupName, setGroupName] = useState("");
+  const [search, setSearch] = useState("");
+  const [startingId, setStartingId] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch("/api/auth/me").then((res) => res.json()).then((data) => setMeId(data.id));
+    fetch("/api/members/directory")
+      .then((res) => res.json())
+      .then((data) => setDirectory(Array.isArray(data) ? data : []));
   }, []);
 
   function loadConversations() {
@@ -133,7 +138,43 @@ export default function ChatPage() {
     }
   }
 
+  async function startChatWith(memberId: number) {
+    const existingConv = conversations.find(
+      (c) => !c.is_group && c.other_participants.some((p) => p.id === memberId)
+    );
+    if (existingConv) {
+      setActiveId(existingConv.id);
+      return;
+    }
+    setStartingId(memberId);
+    try {
+      const res = await fetch("/api/chat/conversations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ participantIds: [memberId], isGroup: false }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        loadConversations();
+        setActiveId(data.id);
+      }
+    } finally {
+      setStartingId(null);
+    }
+  }
+
   const activeConv = conversations.find((c) => c.id === activeId);
+  const query = search.trim().toLowerCase();
+  const filteredConversations = query
+    ? conversations.filter((c) => conversationTitle(c).toLowerCase().includes(query))
+    : conversations;
+  const conversationMemberIds = new Set(
+    conversations.filter((c) => !c.is_group).flatMap((c) => c.other_participants.map((p) => p.id))
+  );
+  const otherMembers = directory.filter((m) => m.id !== meId);
+  const filteredMembers = query
+    ? otherMembers.filter((m) => m.full_name.toLowerCase().includes(query))
+    : otherMembers.filter((m) => !conversationMemberIds.has(m.id));
 
   return (
     <div className="h-[calc(100vh-140px)] flex flex-col md:flex-row gap-4">
@@ -147,15 +188,21 @@ export default function ChatPage() {
             </button>
           </div>
           <div className="relative">
-            <input type="text" placeholder="Search members..." className="w-full pl-10 pr-4 py-2 border rounded-full text-sm bg-gray-50 focus:outline-none focus:border-[var(--primary-color)]" />
+            <input
+              type="text"
+              placeholder="Search members..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border rounded-full text-sm bg-gray-50 focus:outline-none focus:border-[var(--primary-color)]"
+            />
             <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
           </div>
         </div>
         <div className="flex-1 overflow-y-auto">
-          {conversations.length === 0 && (
-            <p className="text-center text-sm text-muted p-6">No conversations yet. Tap + to start one.</p>
+          {filteredConversations.length === 0 && conversations.length === 0 && (
+            <p className="text-center text-sm text-muted p-6">No conversations yet. Pick a member below to start one.</p>
           )}
-          {conversations.map((conv) => (
+          {filteredConversations.map((conv) => (
             <div
               key={conv.id}
               onClick={() => setActiveId(conv.id)}
@@ -182,6 +229,34 @@ export default function ChatPage() {
               </div>
             </div>
           ))}
+
+          {filteredMembers.length > 0 && (
+            <div className="px-4 pt-4 pb-1 text-xs font-semibold text-muted uppercase tracking-wide">
+              {query ? "Members" : "Start a new chat"}
+            </div>
+          )}
+          {filteredMembers.map((m) => (
+            <div
+              key={m.id}
+              onClick={() => startChatWith(m.id)}
+              className="p-4 border-b flex items-center gap-3 cursor-pointer transition hover:bg-gray-50"
+            >
+              <img
+                src={m.photo_url || "https://i.pravatar.cc/150?u=" + m.id}
+                alt=""
+                className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+              />
+              <div className="flex-1 min-w-0">
+                <h4 className="font-bold text-sm truncate">{m.full_name}</h4>
+                <p className="text-xs text-gray-500 truncate">{m.designation}{m.institute_name ? ` · ${m.institute_name}` : ""}</p>
+              </div>
+              {startingId === m.id && <Loader2 size={16} className="animate-spin text-muted" />}
+            </div>
+          ))}
+
+          {query && filteredConversations.length === 0 && filteredMembers.length === 0 && (
+            <p className="text-center text-sm text-muted p-6">No members match "{search}".</p>
+          )}
         </div>
       </div>
 
