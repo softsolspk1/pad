@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 
 export default function AICopilot() {
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hello Dr. Khan. I am the Rederm AI Copilot. How can I assist you with clinical guidelines, treatment options, or case analysis today?" }
+    { role: "assistant", content: "Hello Doctor. I am Derma AI. How can I assist you with clinical guidelines, treatment options, or case analysis today?" }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +61,7 @@ export default function AICopilot() {
             <Activity size={24} />
          </div>
          <div>
-            <h2 className="font-bold text-lg leading-tight">AI Dermatology Copilot</h2>
+            <h2 className="font-bold text-lg leading-tight">Derma AI</h2>
             <p className="text-xs text-red-100">Evidence-based clinical assistant</p>
          </div>
       </div>
@@ -128,7 +128,7 @@ export default function AICopilot() {
             </button>
          </div>
          <p className="text-[10px] text-center text-gray-400 mt-2">
-           AI Copilot provides evidence-based suggestions but does not replace clinical judgment.
+           Derma AI provides evidence-based suggestions but does not replace clinical judgment.
          </p>
       </div>
     </div>

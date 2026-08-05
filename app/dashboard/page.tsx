@@ -140,8 +140,9 @@ export default function DashboardHome() {
           <h4 className="font-bold text-sm">Research</h4>
         </Link>
         <Link href="/dashboard/ai" className="card flex flex-col items-center text-center hover:-translate-y-1 transition-transform border border-red-100 cursor-pointer">
-          <Activity size={28} className="text-crimson mb-2" />
-          <h4 className="font-bold text-sm">AI Copilot</h4>
+           <Activity size={32} className="text-crimson mb-3" />
+           <h4 className="font-bold text-sm mb-1">Derma AI</h4>
+           <p className="text-xs text-muted">Trends & insights</p>
         </Link>
         <Link href="/dashboard/membership" className="card flex flex-col items-center text-center hover:-translate-y-1 transition-transform border border-red-100 cursor-pointer">
           <Users size={28} className="text-crimson mb-2" />

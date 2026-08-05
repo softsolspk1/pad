@@ -1,0 +1,52 @@
+Tables in Database:
+[
+  {
+    "table_name": "admin_users"
+  },
+  {
+    "table_name": "registrations"
+  },
+  {
+    "table_name": "news_posts"
+  },
+  {
+    "table_name": "news_likes"
+  },
+  {
+    "table_name": "news_comments"
+  },
+  {
+    "table_name": "events"
+  },
+  {
+    "table_name": "research_items"
+  },
+  {
+    "table_name": "surveys"
+  },
+  {
+    "table_name": "survey_options"
+  },
+  {
+    "table_name": "survey_votes"
+  },
+  {
+    "table_name": "expert_threads"
+  },
+  {
+    "table_name": "expert_replies"
+  },
+  {
+    "table_name": "chat_conversations"
+  },
+  {
+    "table_name": "chat_participants"
+  },
+  {
+    "table_name": "chat_messages"
+  },
+  {
+    "table_name": "notifications"
+  }
+]
+

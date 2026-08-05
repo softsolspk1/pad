@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { pool } from "@/lib/db";
+import { sendRegistrationEmail } from "@/lib/email";
 
 const REQUIRED_FIELDS = [
   "full_name",
@@ -51,7 +52,10 @@ export async function POST(req: NextRequest) {
       [...REQUIRED_FIELDS.map((field) => body[field]), passwordHash]
     );
 
-    return NextResponse.json({ id: result.rows[0].id, createdAt: result.rows[0].created_at }, { status: 201 });
+    const newRegistration = result.rows[0];
+    await sendRegistrationEmail(body.email, body.full_name);
+
+    return NextResponse.json({ id: newRegistration.id, createdAt: newRegistration.created_at }, { status: 201 });
   } catch (err: any) {
     if (err.code === "23505") {
       const field = err.constraint?.includes("email")

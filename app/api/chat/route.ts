@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export async function POST(req: Request) {
   try {
@@ -16,34 +17,16 @@ export async function POST(req: Request) {
     }
 
     const lastMessage = messages[messages.length - 1].content;
-    const systemPrompt = `You are an expert Dermatology AI Copilot for Rederm Connect, Pakistan's leading professional platform for dermatologists. 
+    const systemPrompt = `You are an expert Derma AI Copilot for Rederm Connect, Pakistan's leading professional platform for dermatologists. 
     Provide evidence-based recommendations, guidelines, research references, drug options, and follow-up advice for dermatological conditions. 
     Maintain a professional, clinical tone. Always include a disclaimer that you are an AI assistant and clinical correlation is required.`;
 
-    // Direct HTTP call to Gemini API for simplicity and to avoid specific SDK version issues
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: systemPrompt + "\n\nUser Question: " + lastMessage }]
-          }
-        ]
-      })
-    });
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Gemini API Error:', errorData);
-      return NextResponse.json({ error: 'Error calling AI model' }, { status: 500 });
-    }
-
-    const data = await response.json();
-    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I could not generate a response.";
+    const result = await model.generateContent(systemPrompt + "\\n\\nUser Question: " + lastMessage);
+    const response = await result.response;
+    const replyText = response.text();
 
     return NextResponse.json({ reply: replyText });
   } catch (error) {

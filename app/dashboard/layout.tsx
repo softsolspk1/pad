@@ -62,7 +62,7 @@ export default async function DashboardLayout({
             <MessageCircle size={20} /> Chat
           </Link>
           <Link href="/dashboard/ai" className="sidebar-item">
-            <Activity size={20} /> AI Copilot
+            <Activity size={20} /> Derma AI
           </Link>
           <Link href="/dashboard/calculators" className="sidebar-item">
             <ClipboardList size={20} /> Calculators
@@ -105,9 +105,15 @@ export default async function DashboardLayout({
            </div>
         </header>
 
-        <main className="p-4 md:p-8 pb-24 md:pb-8 max-w-5xl mx-auto w-full">
+        <main className="p-4 md:p-8 pb-24 md:pb-8 max-w-5xl mx-auto w-full flex-1">
           {children}
         </main>
+        
+        {/* Footer */}
+        <footer className="border-t border-gray-200 bg-white py-4 px-6 text-sm text-gray-500 flex flex-col md:flex-row justify-between items-center mb-16 md:mb-0">
+          <div>Powered by Rederm Helix</div>
+          <div>Developed by Softsols Pakistan</div>
+        </footer>
       </div>
 
       {/* Mobile Nav */}
