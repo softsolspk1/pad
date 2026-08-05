@@ -1,46 +1,93 @@
-import { Award, User, Calendar, MapPin } from "lucide-react";
+"use client";
 
-export default function Membership() {
+import { useEffect, useState } from "react";
+import { ShieldCheck, Calendar, Building2, Loader2 } from "lucide-react";
+
+type Member = {
+  full_name: string;
+  designation: string;
+  institute_name: string;
+  photo_url: string;
+  membership_number: string;
+  approved_at: string | null;
+  status: string;
+};
+
+export default function MembershipPage() {
+  const [member, setMember] = useState<Member | null>(null);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => setMember(data));
+  }, []);
+
+  if (!member) {
+    return (
+      <div className="flex justify-center py-20 text-muted">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+  }
+
+  const memberSince = member.approved_at
+    ? new Date(member.approved_at).toLocaleDateString("en-GB", { year: "numeric", month: "long" })
+    : "—";
+
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Membership</h2>
-      
-      <div className="max-w-md mx-auto mt-8 relative">
-         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-            <div className="h-24 bg-gradient-to-r from-[var(--primary-color)] to-red-600 relative">
-               {/* Pattern overlay */}
-               <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '16px 16px' }}></div>
-               <div className="absolute top-4 left-6 text-white font-bold tracking-wider">PAD MEMBER</div>
-               <div className="absolute top-4 right-6 w-8 h-8 rounded-full bg-white flex items-center justify-center text-[var(--primary-color)] font-bold">R</div>
-            </div>
-            
-            <div className="px-6 pb-6 pt-16 relative text-center">
-               <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-24 h-24 rounded-full border-4 border-white overflow-hidden bg-gray-200 shadow-md">
-                 <img src="https://i.pravatar.cc/150?u=dr_ayesha" alt="Profile" className="w-full h-full object-cover" />
-               </div>
-               
-               <h3 className="text-xl font-bold mt-2 text-gray-900">Dr. Ayesha Khan</h3>
-               <p className="text-[var(--primary-color)] font-medium mb-1">Consultant Dermatologist</p>
-               <p className="text-sm text-gray-500 mb-6">PMDC: 12345-D</p>
-               
-               <div className="grid grid-cols-2 gap-4 text-left border-t pt-4">
-                 <div>
-                    <p className="text-xs text-gray-500 mb-1 flex items-center gap-1"><MapPin size={12}/> City</p>
-                    <p className="font-semibold text-sm">Lahore</p>
-                 </div>
-                 <div>
-                    <p className="text-xs text-gray-500 mb-1 flex items-center gap-1"><Calendar size={12}/> Member Since</p>
-                    <p className="font-semibold text-sm">2022</p>
-                 </div>
-               </div>
-            </div>
-         </div>
-         
-         <div className="mt-8 text-center">
-            <button className="btn-primary w-full max-w-xs flex items-center justify-center gap-2 mx-auto">
-              <Award size={18} /> Download ID Card
-            </button>
-         </div>
+    <div className="max-w-xl mx-auto space-y-6">
+      <div>
+        <h2 className="text-xl font-bold">Digital Membership Card</h2>
+        <p className="text-muted text-sm">Your verified PAD Rederm Connect membership.</p>
+      </div>
+
+      <div
+        className="rounded-3xl p-6 text-white relative overflow-hidden shadow-lg"
+        style={{ background: "linear-gradient(135deg, #a6192e 0%, #5f131f 100%)" }}
+      >
+        <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10" />
+        <div className="absolute -bottom-16 -left-10 w-48 h-48 rounded-full bg-white/5" />
+
+        <div className="relative z-10 flex items-center justify-between mb-8">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-crimson-700 font-bold text-sm">R</div>
+            <span className="font-bold tracking-tight text-sm">REDERM CONNECT</span>
+          </div>
+          <ShieldCheck size={22} className="text-white/80" />
+        </div>
+
+        <div className="relative z-10 flex items-center gap-4 mb-6">
+          <img
+            src={member.photo_url}
+            alt={member.full_name}
+            className="w-20 h-20 rounded-2xl object-cover border-2 border-white/40"
+          />
+          <div>
+            <p className="font-bold text-lg leading-tight">{member.full_name}</p>
+            <p className="text-sm text-red-100">{member.designation}</p>
+            <p className="text-xs text-red-100/80 flex items-center gap-1 mt-1">
+              <Building2 size={12} /> {member.institute_name}
+            </p>
+          </div>
+        </div>
+
+        <div className="relative z-10 flex items-end justify-between pt-4 border-t border-white/20">
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-red-100/70">Membership No.</p>
+            <p className="font-mono font-bold tracking-wider">{member.membership_number || "Pending"}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-[10px] uppercase tracking-wider text-red-100/70 flex items-center gap-1 justify-end">
+              <Calendar size={11} /> Member Since
+            </p>
+            <p className="text-sm font-semibold">{memberSince}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="card text-sm text-muted">
+        This digital card verifies your active membership with the Pakistan Association of Dermatologists (PAD).
+        Present it at events and conferences for member check-in.
       </div>
     </div>
   );

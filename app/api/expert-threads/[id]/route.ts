@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool } from "@/lib/db";
-import { requireMember } from "@/lib/auth";
+import { requireMember, requireAdmin } from "@/lib/auth";
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   const session = await requireMember(req);
@@ -22,4 +22,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   );
 
   return NextResponse.json({ ...thread.rows[0], replies: replies.rows });
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  const session = await requireAdmin(req);
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  await pool.query(`DELETE FROM expert_threads WHERE id = $1`, [params.id]);
+  return NextResponse.json({ ok: true });
 }

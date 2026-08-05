@@ -1,4 +1,4 @@
-const CACHE_NAME = "rederm-connect-v1";
+const CACHE_NAME = "rederm-connect-v2";
 const APP_SHELL = ["/", "/manifest.json", "/icons/icon-192.png", "/icons/icon-512.png"];
 
 self.addEventListener("install", (event) => {
@@ -23,11 +23,17 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
 
+  // Never intercept API calls — these are per-session, auth-sensitive, and always
+  // need a live network response. Let the browser handle them natively.
+  if (url.pathname.startsWith("/api/")) return;
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
         return response;
       })
       .catch(() => caches.match(event.request))

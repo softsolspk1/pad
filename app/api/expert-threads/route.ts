@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool } from "@/lib/db";
-import { requireMember } from "@/lib/auth";
+import { requireMember, requireAdmin } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
-  const session = await requireMember(req);
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const member = await requireMember(req);
+  const admin = member ? null : await requireAdmin(req);
+  if (!member && !admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const result = await pool.query(
     `SELECT t.id, t.title, t.content, t.image_url, t.created_at,

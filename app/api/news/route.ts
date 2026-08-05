@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool } from "@/lib/db";
-import { requireMember } from "@/lib/auth";
+import { requireMember, requireAdmin } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
-  const session = await requireMember(req);
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const member = await requireMember(req);
+  const admin = member ? null : await requireAdmin(req);
+  if (!member && !admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const result = await pool.query(
     `SELECT p.id, p.content, p.image_url, p.created_at,
@@ -16,7 +17,7 @@ export async function GET(req: NextRequest) {
      JOIN registrations a ON a.id = p.author_id
      ORDER BY p.created_at DESC
      LIMIT 50`,
-    [session.id]
+    [member?.id ?? 0]
   );
   return NextResponse.json(result.rows);
 }
