@@ -115,7 +115,7 @@ export default function LandingPage() {
             <p className="font-bold text-gray-900 text-sm">PAD APP</p>
           </div>
           <p className="text-xs text-gray-400 text-center">
-            © {new Date().getFullYear()} Pakistan Association of Dermatologists. All rights reserved.
+            © {new Date().getFullYear()} Pakistan Association of Dermatologists. All rights reserved. Powered by Helix Rederm
           </p>
         </div>
       </footer>

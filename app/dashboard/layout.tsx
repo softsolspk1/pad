@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import {
   Home, Users, Calendar, BookOpen, MessageCircle,
   HelpCircle, Activity, ClipboardList, Info, User,
-  Bell, MessageSquare
+  Bell, MessageSquare, Menu
 } from "lucide-react";
 import { verifySession, SESSION_COOKIE } from "@/lib/auth";
 import { pool } from "@/lib/db";
@@ -30,6 +30,9 @@ export default async function DashboardLayout({
 
   return (
     <div className="app-container">
+      <input type="checkbox" id="mobile-menu-toggle" className="hidden" />
+      <label htmlFor="mobile-menu-toggle" className="sidebar-backdrop cursor-pointer"></label>
+
       {/* Sidebar for Desktop */}
       <aside className="sidebar">
         <div className="px-6 mb-8 mt-4 flex items-center gap-2 text-crimson">
@@ -40,6 +43,9 @@ export default async function DashboardLayout({
         <nav className="flex flex-col gap-1">
           <Link href="/dashboard" className="sidebar-item active">
             <Home size={20} /> Home
+          </Link>
+          <Link href="/dashboard/about" className="sidebar-item">
+            <Info size={20} /> About PAD
           </Link>
           <Link href="/dashboard/membership" className="sidebar-item">
             <Users size={20} /> Membership
@@ -65,9 +71,6 @@ export default async function DashboardLayout({
           <Link href="/dashboard/calculators" className="sidebar-item">
             <ClipboardList size={20} /> Calculators
           </Link>
-          <Link href="/dashboard/about" className="sidebar-item">
-            <Info size={20} /> About PAD
-          </Link>
           <Link href="/dashboard/profile" className="sidebar-item">
             <User size={20} /> Profile
           </Link>
@@ -81,7 +84,10 @@ export default async function DashboardLayout({
       <div className="main-content bg-[var(--bg-color)] min-h-screen">
         {/* Top Header */}
         <header className="top-header sticky top-0 bg-white z-10 shadow-sm border-b">
-           <div className="flex items-center md:hidden">
+           <div className="flex items-center md:hidden gap-3">
+              <label htmlFor="mobile-menu-toggle" className="cursor-pointer text-gray-700 hover:text-gray-900 transition-colors">
+                <Menu size={24} />
+              </label>
               <img src="/logo.jpg" alt="Logo" className="w-8 h-8 rounded-full object-cover" />
            </div>
            <div className="hidden md:flex flex-1">
@@ -116,6 +122,10 @@ export default async function DashboardLayout({
         <Link href="/dashboard" className="nav-item active">
           <Home size={24} />
           <span>Home</span>
+        </Link>
+        <Link href="/dashboard/about" className="nav-item">
+          <Info size={24} />
+          <span>About</span>
         </Link>
         <Link href="/dashboard/membership" className="nav-item">
           <Users size={24} />

@@ -199,9 +199,31 @@ button {
 }
 
 /* Hide sidebar on mobile, hide mobile nav on desktop */
+.sidebar-backdrop {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .sidebar {
     display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    background-color: var(--surface-color);
+    width: 280px;
+    height: 100vh;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+  }
+  #mobile-menu-toggle:checked ~ .sidebar {
+    display: flex;
+  }
+  #mobile-menu-toggle:checked ~ .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 40;
   }
 }
 

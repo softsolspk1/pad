@@ -64,7 +64,7 @@ function LoginForm() {
 
         <div className="relative z-10 space-y-8 max-w-md">
           <h2 className="text-3xl font-bold leading-tight">
-            Where experts connect, knowledge evolves, and patients transform.
+            Pakistan Association of Dermatologist
           </h2>
           <div className="space-y-5">
             <div className="flex items-center gap-3">
