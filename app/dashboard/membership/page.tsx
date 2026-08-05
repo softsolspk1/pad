@@ -38,7 +38,7 @@ export default function MembershipPage() {
     <div className="max-w-xl mx-auto space-y-6">
       <div>
         <h2 className="text-xl font-bold">Digital Membership Card</h2>
-        <p className="text-muted text-sm">Your verified PAD Rederm Connect membership.</p>
+        <p className="text-muted text-sm">Your verified PAD APP membership.</p>
       </div>
 
       <div
@@ -50,8 +50,8 @@ export default function MembershipPage() {
 
         <div className="relative z-10 flex items-center justify-between mb-8">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-crimson-700 font-bold text-sm">R</div>
-            <span className="font-bold tracking-tight text-sm">REDERM CONNECT</span>
+            <img src="/logo.jpg" alt="Logo" className="w-8 h-8 rounded-full object-cover" />
+            <span className="font-bold tracking-tight text-sm">PAD APP</span>
           </div>
           <ShieldCheck size={22} className="text-white/80" />
         </div>

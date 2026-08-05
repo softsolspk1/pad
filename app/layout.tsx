@@ -3,13 +3,13 @@ import "./globals.css";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 export const metadata: Metadata = {
-  title: "Rederm Connect - AI-Powered Dermatology Platform",
-  description: "Pakistan's First AI-Powered Dermatology & Aesthetic Professional Platform",
+  title: "PAD APP",
+  description: "Pakistan Association of Dermatologist Platform",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Rederm Connect",
+    title: "PAD APP",
   },
 };
 

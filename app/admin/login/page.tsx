@@ -48,7 +48,7 @@ export default function AdminLogin() {
             <ShieldCheck size={22} />
           </div>
           <h2 className="text-xl font-bold text-gray-900">Admin Console</h2>
-          <p className="text-muted mt-1.5 text-sm">Rederm Connect &middot; PAD Administration</p>
+          <p className="text-muted mt-1.5 text-sm">PAD APP &middot; PAD Administration</p>
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>

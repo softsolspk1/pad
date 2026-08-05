@@ -33,10 +33,8 @@ export default async function DashboardLayout({
       {/* Sidebar for Desktop */}
       <aside className="sidebar">
         <div className="px-6 mb-8 mt-4 flex items-center gap-2 text-crimson">
-          <div className="w-8 h-8 rounded-full bg-[var(--primary-color)] flex items-center justify-center text-white font-bold text-sm">
-            R
-          </div>
-          <span className="font-bold text-lg">REDERM</span>
+          <img src="/logo.jpg" alt="Logo" className="w-8 h-8 rounded-full object-cover" />
+          <span className="font-bold text-lg">PAD APP</span>
         </div>
         
         <nav className="flex flex-col gap-1">
@@ -84,9 +82,7 @@ export default async function DashboardLayout({
         {/* Top Header */}
         <header className="top-header sticky top-0 bg-white z-10 shadow-sm border-b">
            <div className="flex items-center md:hidden">
-              <div className="w-8 h-8 rounded-full bg-[var(--primary-color)] flex items-center justify-center text-white font-bold text-sm">
-                R
-              </div>
+              <img src="/logo.jpg" alt="Logo" className="w-8 h-8 rounded-full object-cover" />
            </div>
            <div className="hidden md:flex flex-1">
              <h2 className="font-semibold">Welcome back, {member?.full_name ?? "Doctor"}</h2>
@@ -112,7 +108,6 @@ export default async function DashboardLayout({
         {/* Footer */}
         <footer className="border-t border-gray-200 bg-white py-4 px-6 text-sm text-gray-500 flex flex-col md:flex-row justify-between items-center mb-16 md:mb-0">
           <div>Powered by Rederm Helix</div>
-          <div>Developed by Softsols Pakistan</div>
         </footer>
       </div>
 

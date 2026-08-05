@@ -58,10 +58,8 @@ function LoginForm() {
         <div className="absolute bottom-0 -left-16 w-72 h-72 rounded-full bg-white/5" />
 
         <Link href="/" className="flex items-center gap-2.5 relative z-10">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-crimson-600 font-bold">
-            R
-          </div>
-          <span className="font-bold tracking-tight">REDERM CONNECT</span>
+          <img src="/logo.jpg" alt="Logo" className="w-10 h-10 rounded-full object-cover" />
+          <span className="font-bold tracking-tight">PAD APP</span>
         </Link>
 
         <div className="relative z-10 space-y-8 max-w-md">
@@ -97,10 +95,8 @@ function LoginForm() {
       <div className="flex items-center justify-center p-6 sm:p-12">
         <div className="max-w-sm w-full">
           <Link href="/" className="lg:hidden flex items-center gap-2.5 mb-10">
-            <div className="w-9 h-9 rounded-full bg-crimson-600 flex items-center justify-center text-white font-bold">
-              R
-            </div>
-            <span className="font-bold text-gray-900 tracking-tight">REDERM CONNECT</span>
+            <img src="/logo.jpg" alt="Logo" className="w-9 h-9 rounded-full object-cover" />
+            <span className="font-bold text-gray-900 tracking-tight">PAD APP</span>
           </Link>
 
           <h2 className="text-2xl font-bold text-gray-900">Welcome back</h2>

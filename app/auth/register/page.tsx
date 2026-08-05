@@ -84,7 +84,7 @@ export default function Register() {
           </div>
           <h2 className="text-xl font-bold text-gray-900 mb-2">Registration Submitted</h2>
           <p className="text-sm text-muted mb-8 leading-relaxed">
-            Thank you for registering with Rederm Connect. Your application has been sent to the PAD admin team for
+            Thank you for registering with PAD APP. Your application has been sent to the PAD admin team for
             review. You'll be notified by email once your account is approved and your digital membership card is
             ready.
           </p>
@@ -100,11 +100,9 @@ export default function Register() {
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-full bg-crimson-600 flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">
-            R
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900">Join Rederm Connect</h2>
-          <p className="text-muted mt-2">Register as a member of Pakistan's premier dermatology platform</p>
+          <img src="/logo.jpg" alt="Logo" className="w-12 h-12 rounded-full object-cover mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-900">Join PAD APP</h2>
+          <p className="text-muted mt-2">Register as a member of Pakistan Association of Dermatologists platform</p>
           <div className="inline-flex items-center gap-2 bg-crimson-50 text-crimson-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-crimson-100 mt-4">
             <ShieldCheck size={14} /> Reviewed &amp; approved by PAD admin
           </div>

@@ -1,7 +1,7 @@
 {
-  "name": "Rederm Connect - PAD Dermatology Platform",
-  "short_name": "Rederm Connect",
-  "description": "Pakistan's First AI-Powered Dermatology & Aesthetic Professional Platform",
+  "name": "PAD APP",
+  "short_name": "PAD APP",
+  "description": "Pakistan Association of Dermatologist Platform",
   "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",
@@ -10,22 +10,10 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icons/icon-512.png",
+      "src": "/logo.jpg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any"
-    },
-    {
-      "src": "/icons/icon-maskable-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
     }
   ]
 }

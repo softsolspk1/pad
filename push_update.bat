@@ -1,4 +1,4 @@
 git add .
-git commit -m "Added footer, demo content, email notifications, and fixed Derma AI"
+git commit -m "Update branding to PAD APP, apply logo, and update landing page sections"
 git push origin main
 pause
