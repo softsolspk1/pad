@@ -32,11 +32,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="flex min-h-screen bg-gray-100">
       <aside className="hidden md:flex flex-col w-64 bg-gray-900 text-gray-300 min-h-screen sticky top-0">
         <div className="px-6 py-6 flex items-center gap-2.5 border-b border-gray-800">
-          <div className="w-9 h-9 rounded-full bg-crimson-600 flex items-center justify-center text-white font-bold">
-            R
-          </div>
+          <img src="/logo.jpg" alt="Logo" className="w-9 h-9 rounded-full object-cover" />
           <div>
-            <p className="text-white font-bold text-sm leading-tight">Rederm Connect</p>
+            <p className="text-white font-bold text-sm leading-tight">PAD APP</p>
             <p className="text-[11px] text-gray-500">Admin Console</p>
           </div>
         </div>
@@ -64,7 +62,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <div className="flex-1 min-w-0">
         <header className="md:hidden sticky top-0 z-10 bg-gray-900 text-white px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-crimson-600 flex items-center justify-center font-bold text-sm">R</div>
+            <img src="/logo.jpg" alt="Logo" className="w-7 h-7 rounded-full object-cover" />
             <span className="font-bold text-sm">Admin Console</span>
           </div>
           <SignOutButton className="text-xs text-red-300" />
