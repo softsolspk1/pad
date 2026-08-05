@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     Maintain a professional, clinical tone. Always include a disclaimer that you are an AI assistant and clinical correlation is required.`;
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3.6-flash" });
 
     const result = await model.generateContent(systemPrompt + "\\n\\nUser Question: " + lastMessage);
     const response = await result.response;
